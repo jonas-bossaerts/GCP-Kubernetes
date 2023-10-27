@@ -1,0 +1,43 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: basic-ingress
+  annotations:
+    kubernetes.io/ingress.global-static-ip-name: "monopoly-ip"
+    networking.gke.io/managed-certificates: managed-cert
+    kubernetes.io/ingress.class: "gce"
+    networking.gke.io/v1beta1.FrontendConfig: my-frontend-config
+spec:
+  rules:
+   - http:
+      paths:
+        - path: "/api/*"
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: gateway
+              port: 
+                number: 9090     
+        - path: "/ws-chat"
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: gateway
+              port: 
+                number: 9090
+        - path: "/ws-message"
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: gateway
+              port: 
+                number: 9090
+        - path: "/*"
+          pathType: ImplementationSpecific
+          backend:
+            service:
+              name: monopoly-ui
+              port: 
+                number: 3000 
+
+
